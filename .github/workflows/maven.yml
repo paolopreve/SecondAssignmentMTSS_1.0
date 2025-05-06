@@ -5,7 +5,6 @@
 # They are provided by a third-party and are governed by
 # separate terms of service, privacy policy, and support
 # documentation.
-
 name: Java CI with Maven
 
 on:
@@ -27,12 +26,13 @@ jobs:
       uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
-        java-version: '17' # Cambia versione se usi un'altra
+        java-version: '17'
 
     - name: Build with Maven
-      working-directory: roman-number
       run: mvn -B install
+      working-directory: roman-number
 
     - name: Generate Dependency Graph
-      working-directory: roman-number
       run: mvn com.github.ferstl:depgraph-maven-plugin:4.0.1:graph
+      working-directory: roman-number
+
