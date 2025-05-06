@@ -6,19 +6,13 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Java CI with Maven (Gitflow)
+name: Java CI with Maven
 
 on:
   push:
-    branches:
-      - develop
-      - 'feature/**'
-      - 'release/**'
-      - 'hotfix/**'
+    branches: [ main ]
   pull_request:
-    branches:
-      - develop
-      - main
+    branches: [ main ]
 
 jobs:
   build:
@@ -26,17 +20,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 17
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Java
       uses: actions/setup-java@v4
       with:
-        java-version: '17'
         distribution: 'temurin'
-        cache: maven
+        java-version: '17' # Cambia versione se usi un'altra
+
     - name: Build with Maven
       working-directory: roman-number
-      run: mvn -B package
+      run: mvn -B install
 
-    # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
-    - name: Update dependency graph
-      uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
+    - name: Generate Dependency Graph
+      working-directory: roman-number
+      run: mvn com.github.ferstl:depgraph-maven-plugin:4.0.1:graph
